@@ -3,12 +3,15 @@ from django.shortcuts import render
 from rest_framework import views
 from rest_framework import viewsets
 from rest_framework import generics
+from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView
 
 from .serializer import CreateUserSerializer
 from .serializer import LoginSerializer
 
 from django.contrib.auth.models import User
+
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 class RegistrationAPI(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -32,22 +35,23 @@ class RegistrationAPI(viewsets.ModelViewSet):
             }
         )
 
-class LoginView(views.APIView):
+@ensure_csrf_cookie
+class LoginView(generics.GenericAPIView):
+    serializer_class = LoginSerializer
 
-    def post(self, request, format=None):
-        data = request.data
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data
+        return Response(
+            {
+                "user": UserSerializer(
+                    user, context=self.get_serializer_context()
+                ).data,
+            }
+        )
 
-        username = data.get('username', None)
-        password = data.get('password', None)
-
-        user = authenticate(username=username, password=password)
-
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                print('login success')
-                return Response(status=status.HTTP_200_OK)
-            else:
-                return Response(status=status.HTTP_404_NOT_FOUND)
-        else:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+class Logout(APIView):
+    def get(self, request, format=None):
+        request.user.auth_token.delete()
+        return Response(status=status.HTTP_200_OK)

@@ -9,4 +9,5 @@ router.register('register', views.RegistrationAPI, base_name='register')
 urlpatterns = [
     path('', include(router.urls)),
     path('login/', views.LoginView, name='login'),
+    path('logout/', views.Logout, name='logout'),
 ]
