@@ -34,17 +34,13 @@ class RegistrationAPI(viewsets.ModelViewSet):
     def post(self, request, *args, **kwargs):
         if len(request.data["username"]) < 6 or len(request.data["password"]) < 4:
             body = {"message": "short field"}
-            return Response(body, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'result':False})
         serializer = self.get_serializer(data=request.data)
         profile_serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         return Response(
-            {
-                "user": UserSerializer(
-                    user, context=self.get_serializer_context()
-                ).data,
-            }
+            {'result':True,}
         )
 
 # @ensure_csrf_cookie
@@ -79,8 +75,11 @@ def login(request):
                         status=HTTP_200_OK)
     token, _ = Token.objects.get_or_create(user=user)
     return Response({'token': token.key,
-                     'ID': user.username,
-                     'username':user.last_name},
+                     'user': {
+                         'ID': user.username,
+                         'username':user.last_name,
+                        }
+                     },
                     status=HTTP_200_OK)
 
 class Logout(APIView):

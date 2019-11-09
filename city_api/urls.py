@@ -5,8 +5,9 @@ from . import views
 router = DefaultRouter()
 # router.register('register-user/', views.UserCreateAPIView)
 router.register('province', views.ProvinceViewSet)
-router.register('borough', views.BoroughViewSet, base_name='borough')
+# router.register('borough', views.BoroughList.as_view(), base_name='borough')
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('borough/<int:province>', views.BoroughList, name='BoroughList'),
 ]
