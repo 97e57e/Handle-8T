@@ -60,6 +60,7 @@ def login(request):
     return Response({'token': token.key,
                      'result':True,
                      'user': {
+                         'pk': user.id,
                          'ID': user.username,
                          'username':user.last_name,
                         }
