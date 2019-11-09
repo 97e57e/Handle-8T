@@ -6,5 +6,5 @@ router = DefaultRouter()
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('post-list/', views.PostList.as_view(), name='PostList'),
+    path('post-list/<int:borough>', views.PostList.as_view(), name='PostList'),
 ]
