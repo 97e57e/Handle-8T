@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'accounts_api',
     'city_api',
+    'post_api',
     'rest_auth',
     'rest_auth.registration',
 ]
