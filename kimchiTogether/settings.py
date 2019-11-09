@@ -25,7 +25,7 @@ SECRET_KEY = '77ls^##i*)f!h8fe0cc($me-gdbvva#exyo2&2k_(r^n+gjxzm'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['52.78.63.13','127.0.0.1',]
 
 
 # Application definition
@@ -45,13 +45,7 @@ INSTALLED_APPS = [
     'rest_auth.registration',
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated', )
-}
+
 SITE_ID=1 
 
 ACCOUNT_EMAIL_REQUIRED = False
