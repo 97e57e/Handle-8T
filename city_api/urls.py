@@ -9,5 +9,5 @@ router.register('province', views.ProvinceViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('borough/<int:province>', views.BoroughList, name='BoroughList'),
+    path('borough/', views.BoroughList.as_view(), name='BoroughList'),
 ]

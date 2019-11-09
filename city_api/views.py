@@ -16,7 +16,6 @@ from .models import Borough
 from .serializer import ProvinceSerializer
 from .serializer import BoroughSerializer
 
-from rest_framework.filters import BaseFilterBackend
 
 class ProvinceViewSet(viewsets.ModelViewSet):
     queryset = Province.objects.all()
@@ -54,5 +53,5 @@ class BoroughViewSet(viewsets.ModelViewSet):
 class BoroughList(generics.ListAPIView):
     serializer_class = BoroughSerializer
     def get_queryset(self):
-        qs = Borough.objets.filter(province_code=request.get.date('province'))
-        return qs
+        province = self.request.GET['province']
+        return Borough.objects.filter(province_code=province)
