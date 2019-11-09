@@ -78,7 +78,9 @@ def login(request):
         return Response({'message': 'login_failed'},
                         status=HTTP_200_OK)
     token, _ = Token.objects.get_or_create(user=user)
-    return Response({'token': token.key},
+    return Response({'token': token.key,
+                     'ID': user.username,
+                     'username':user.last_name},
                     status=HTTP_200_OK)
 
 class Logout(APIView):
